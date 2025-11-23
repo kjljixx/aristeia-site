@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<meta name="color-scheme" content="light dark">
-
+  
 <head>
   <title>Aristeia</title>
-  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.bubble.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-  <link rel="stylesheet" href="/aristeia.css">
-  <meta name="viewport" content="width=device-width, 
-  initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="AI-powered Contention Generation and Card Cutting for Debaters">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet' media="print" onload="this.media='all'">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.bubble.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="/aristeia.css" media="print" onload="this.media='all'">
 </head>
 
 <body>
@@ -22,6 +23,7 @@
       <div id="aristeia-utils-right">
         <button onclick="showHelp()" title="View help documentation">Help</button>
         <button onclick="showSettings()" title="Open settings menu">Settings</button>
+        <button onclick="window.open('https://github.com/kjljixx/aristeia-site/issues/new')" title="Give feedback or report an issue on GitHub">Feedback</button>
       </div>
     </div>
 
@@ -183,8 +185,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-  <script src="/aristeia.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" media="print" onload="this.media='all'"></script>
+  <script src="/aristeia.js" media="print" onload="this.media='all'"></script>
 </body>
 
 </html>
