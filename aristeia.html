@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<meta name="color-scheme" content="light dark">
+
+<head>
+  <title>Aristeia</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.bubble.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="/aristeia.css">
+  <meta name="viewport" content="width=device-width, 
+  initial-scale=1.0">
+</head>
+
+<body>
+  <div>
+    <div id="aristeia-utils">
+      <button title="Back to Arguments" onclick="showArgumentList()" id="aristeia-title-button">
+        <h1>Aristeia</h1>
+      </button>
+      <div id="aristeia-utils-right">
+        <button onclick="showHelp()" title="View help documentation">Help</button>
+        <button onclick="showSettings()" title="Open settings menu">Settings</button>
+      </div>
+    </div>
+
+    <div id="formatting-toolbar" style="display: none;">
+      <button id="format-underline-btn" title="Underline">Un</button>
+      <button id="format-emphasize-btn" title="Emphasize">Em</button>
+      <button id="format-highlight-btn" title="Highlight">Hi</button>
+    </div>
+
+    <div id="argument-list-page">
+      <button id="create-new-argument-button" onclick="showNewArgumentPage()"
+        title="Generate a new Argument with AI research">Generate Argument</button>
+      <button id="create-blank-button" onclick="createBlankArgument()"
+        title="Create a blank Argument without AI generation">Create Blank Argument</button>
+      <div id="argument-list"></div>
+    </div>
+
+    <div id="argument-page" style="display: none;">
+      <div id="argument-utils">
+        <button id="revise-argument-button" title="Revise the current Argument with AI">Revise Argument</button>
+        <button id="cut-all-cards-button" title="Cut all uncut cards in this Argument with AI">Cut All Cards</button>
+        <button id="copy-all-button" title="Copy all cards with style tags">Copy All</button>
+        <button id="add-card-argument-utils-button" title="Add a new card">Add Card</button>
+      </div>
+
+      <div id="query-section"></div>
+
+      <div id="output"></div>
+    </div>
+
+    <div id="settings-page" style="display: none;">
+      <button onclick="closeSettings()" title="Close settings menu">Back</button>
+      <h2>Settings</h2>
+
+      <h3>Model</h3>
+      <label>Select Model:
+        <select id="setting-model" onchange="saveSettings()">
+          <option value="gemini-3-pro-preview">Gemini 3 Pro Preview (Experimental but Recommended)</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro (Stable)</option>
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Faster, but worse quality)</option>
+          <option value="gemini-2.0-flash">Gemini 2.0 Flash (Even faster, but even worse quality)</option>
+          <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite (Literally no reason to use this unless you want
+            to see how bad it is)</option>
+        </select>
+      </label><br>
+
+      <h3>Highlight</h3>
+      <label>Color: <input type="color" id="setting-highlight-color" onchange="saveSettings()"></label><br>
+
+      <h3>Emphasis</h3>
+      <label>Box Width: <input type="number" id="setting-emphasis-box-width" min="0" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+      <label>Font Size: <input type="number" id="setting-emphasis-font-size" min="1" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+      <label><input type="checkbox" id="setting-emphasis-bold" onchange="saveSettings()"> Bold</label><br>
+      <label><input type="checkbox" id="setting-emphasis-italic" onchange="saveSettings()"> Italic</label><br>
+
+      <h3>Underline</h3>
+      <label><input type="checkbox" id="setting-underline-bold" onchange="saveSettings()"> Bold</label><br>
+      <label>Font Size: <input type="number" id="setting-underline-font-size" min="1" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+
+      <h3>Tag</h3>
+      <label>Font Size: <input type="number" id="setting-tag-font-size" min="1" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+
+      <h3>Cite</h3>
+      <label>Font Size: <input type="number" id="setting-cite-font-size" min="1" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+      <label><input type="checkbox" id="setting-cite-underline" onchange="saveSettings()"> Underline</label><br>
+      <label>Citation Format:<br><input type="text" id="setting-citation-format" onchange="saveSettings()"
+          title="Citation Format" style="width: 60%"><br>
+        <small>
+          ^ Use the following placeholders in your citation format (All placeholders from 'Cite Creator' are supported
+          except %quals% and %linebreak%):<br>
+          {cite}...{/cite} - Give 'Citation' styling to the enclosed text, typically '{cite}%last% '%y%{/cite}'<br>
+          %author% - Author's full name<br>
+          %first% - Author's first Name<br>
+          %last% - Author's last name<br>
+          %date% - Full date<br>
+          %y% - 2 digit year<br>
+          %title% - Article title<br>
+          %publication% - Publication<br>
+          %url% - Full URL<br>
+          %accessed% - Today's date<br>
+        </small>
+      </label>
+
+      <h3>Normal Text</h3>
+      <label>Font Size: <input type="number" id="setting-normal-font-size" min="1" step="0.5"
+          onchange="saveSettings()">pt</label><br>
+
+      <br>
+      <button onclick="resetSettings()">Reset to Defaults</button>
+    </div>
+
+    <div id="help-page" style="display: none;">
+      <button onclick="closeHelp()" title="Close help documentation">Back</button>
+      <h2>Help Documentation</h2>
+
+      <h3>Argument Creation</h3>
+      <p><strong>Generate Argument:</strong> Create a new argument using AI. Arguments can be contentions, rebuttals, or
+        general collections of cards. The AI will generate a sequence of uncut cards with taglines and sources.</p>
+      <p><strong>Create Blank Argument:</strong> Start with a blank argument containing one empty card. Useful for
+        manually building arguments without AI assistance.</p>
+
+      <h3>Argument Management</h3>
+      <p><strong>Rename:</strong> Change the name/query of an existing argument. The argument name is displayed in the
+        argument list.</p>
+      <p><strong>Delete:</strong> Permanently remove an argument and all its cards from storage.</p>
+      <p><strong>Revise Argument:</strong> Use AI to modify the current argument based on a revision prompt. The AI can
+        add, remove, or modify cards while preserving cards. Type your revision instructions. Note that the AI only has
+        access to the current contention and your current revision instructions, not previous instructions.</p>
+
+      <h3>Card Operations</h3>
+      <p><strong>Add Card:</strong> Insert a new blank card below the current card (or at the beginning if the argument
+        has no cards).</p>
+      <p><strong>Cut Card:</strong> Use AI to analyze the source article and extract relevant paragraphs (with
+        contiguous paragraphs and paragraph integrity) with proper formatting. The AI will create a citation based on
+        your 'Citation Format' setting and body text with emphasis, underlining, and highlighting applied. Requires a
+        tagline and source URL before cutting.</p>
+      <p><strong>Cut All Cards:</strong> Automatically cut all uncut cards in the argument</p>
+      <p><strong>Copy:</strong> Copy a single card's content with style tags ({tag}, {cite}, {highlight}, {emphasize},
+        {underline}) to your clipboard. After pasting into Microsoft Word, use <a
+          href="https://github.com/kjljixx/aristeia-macros" target="_blank">this macro</a> to format the style tags
+        according to your debate format preferences.</p>
+      <p><strong>Copy All:</strong> Copy all cards in the argument with style tags.</p>
+      <p><strong>Uncut:</strong> Remove the citation and body text from a cut card, returning it to uncut state. The
+        tagline and source are preserved.</p>
+      <p><strong>Delete:</strong> Permanently remove a card from the argument.</p>
+      <p><strong>Move:</strong> Click and drag the Move button to reorder cards within the argument.</p>
+
+      <h3>Card Manual Editing</h3>
+      <p><strong>Tagline:</strong> Click the tagline area to edit it inline. Press Enter to save or Escape to cancel.
+        The tagline is required before cutting a card.</p>
+      <p><strong>Source (Uncut Cards):</strong> Click the source area to edit the URL. The source is where the model
+        looks for content when cutting cards</p>
+      <p><strong>Citation (Cut Cards):</strong> Click the citation to edit it manually. Editing the citation never
+        changes the source URL</p>
+      <p><strong>Body Text:</strong> Click the body text area to manually cut a card. Apply underlining (Un), emphasis
+        (Em), or highlighting (Hi) to selected text. Press Enter to save or Escape to cancel.</p>
+
+      <h3>Settings</h3>
+      <p><strong>Model:</strong> Select which AI model to use for generation. We currently only support Google's Gemini
+        models with no plans to expand.</p>
+      <p><strong>Highlight/Emphasis/Underline/Font Sizes:</strong> Choose formatting options for the various styles in a
+        card </p>
+      <p><strong>Citation Format:</strong> Customize how citations are generated when the AI cuts a card</p>
+      <p><strong>Reset to Defaults:</strong> Restore all settings to their original values.</p>
+
+      <h3>Data Storage</h3>
+      <p>All arguments and settings are stored locally in your browser using localStorage. To backup your work, you can
+        use your browser's developer tools to export localStorage data. A way to sync arguments on different devices is
+        in early stages of development.</p>
+
+      <h3>Platform Support</h3>
+      <p>Aristeia is designed for laptops/desktops, but most features should work on tablets and smartphones as well.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script src="/aristeia.js"></script>
+</body>
+
+</html>

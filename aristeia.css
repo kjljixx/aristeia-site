@@ -1,0 +1,418 @@
+:root {
+  font-family: 'Inter', sans-serif;
+}
+
+html {
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 8px;
+}
+
+#aristeia-utils {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#aristeia-utils-right {
+  margin-left: auto;
+}
+
+button {
+  color: black;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid black;
+  border-radius: 5pt;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#aristeia-title-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+#create-new-argument-button {
+  margin-bottom: 10px;
+}
+
+#argument-utils {
+  margin-bottom: 10px;
+}
+
+#revise-argument-input {
+  margin-left: 10px;
+  border: 1px solid black;
+  border-radius: 5pt;
+  padding: 2px;
+}
+
+#revise-argument-input:empty::before {
+  content: 'Enter requested revisions';
+  color: #ededed;
+}
+
+#back-to-arguments-button {
+  margin-left: 10px;
+}
+
+#query {
+  font-family: 'Inter', sans-serif;
+  font-size: 11pt;
+  border: 1px solid black;
+  border-radius: 5pt;
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+  resize: vertical;
+  min-height: 60px;
+  box-sizing: border-box;
+}
+
+#output {
+  position: relative;
+}
+
+.card {
+  font-family: 'Calibri';
+  border: 1px solid black;
+  border-radius: 5pt;
+  padding: 10px;
+  padding-bottom: 5px;
+  font-size: 11pt;
+  margin-bottom: 10px;
+  background-color: #ededed;
+  box-sizing: border-box;
+  /*make sure dragging doesn't make the card bigger*/
+  position: relative;
+}
+
+.card.is-dragging {
+  z-index: 1000;
+  position: fixed;
+  left: 8px;
+  right: 8px;
+}
+
+.card.drop-before::before,
+.card.drop-after::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  border: 1px solid black;
+  border-radius: 5pt;
+  background-color: white;
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+.card.drop-before::before {
+  top: calc(-10px - var(--dragged-card-height, 100px));
+  height: var(--dragged-card-height, 100px);
+}
+
+.card.drop-after::after {
+  bottom: calc(-10px - var(--dragged-card-height, 100px));
+  height: var(--dragged-card-height, 100px);
+}
+
+.cut-card .show-if-card-uncut-button {
+  display: none;
+}
+
+.uncut-card .show-if-card-cut-button {
+  display: none;
+}
+
+.card:hover .danger-card-utils {
+  opacity: 1;
+}
+
+.card-utils {
+  display: flex;
+  opacity: 0;
+}
+
+.card:hover .card-utils {
+  opacity: 1;
+}
+
+.card-utils button {
+  margin-right: 4px;
+}
+
+.danger-card-utils {
+  margin-left: auto;
+  opacity: 0;
+}
+
+.danger-card-utils button {
+  margin-right: 0px;
+}
+
+.drag-handle {
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.tagline {
+  font-size: 13pt;
+  font-weight: bold;
+  border: 1px solid transparent;
+  padding: 4px;
+  border-radius: 5pt;
+}
+
+.tagline h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.tagline:hover {
+  border-color: black;
+}
+
+.cite {
+  border: 1px solid transparent;
+  padding: 4px;
+  border-radius: 5pt;
+}
+
+.cite:hover {
+  border-color: black;
+}
+
+.card-body {
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  padding: 4px;
+  border-radius: 5pt;
+}
+
+.card-body:hover {
+  border-color: black;
+}
+
+.cite-text {
+  font-size: 13pt;
+  font-weight: bold;
+}
+
+.card-highlight {
+  background-color: #7F7F00;
+}
+
+.card-emphasize,
+.card-emphasize .card-underline {
+  font-size: 13pt;
+  font-weight: bold;
+  text-decoration: underline;
+  border: 1pt solid black;
+  font-style: normal;
+}
+
+.card-underline {
+  text-decoration: underline;
+}
+
+#formatting-toolbar {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  padding: 4px;
+  border-radius: 5pt;
+  display: flex;
+  gap: 4px;
+  z-index: 1000;
+}
+
+#formatting-toolbar button {
+  border-color: black;
+}
+
+#formatting-toolbar button.active {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+#formatting-toolbar button.active:hover {
+  background-color: #121212;
+}
+
+.ql-toolbar, .ql-toolbar.ql-snow {
+  background-color: white;
+  border: 1px solid black;
+  padding: 4px;
+  border-radius: 5pt;
+}
+
+.ql-bubble .ql-tooltip-arrow {
+  display: none;
+}
+
+.ql-bubble .ql-toolbar, .ql-snow.ql-toolbar{
+  .ql-formats {
+    margin: 0 4px 0 0;
+  }
+}
+
+.ql-bubble .ql-toolbar, .ql-snow.ql-toolbar{
+  .ql-formats:first-child {
+    margin-left: 0;
+  }
+}
+
+.ql-bubble .ql-toolbar, .ql-snow.ql-toolbar{
+  .ql-formats:last-child {
+    margin-right: 0;
+  }
+}
+
+.ql-toolbar .ql-formats button, 
+.ql-snow.ql-toolbar button:hover:not(.ql-active) {
+  border: 1px solid black;
+  border-radius: 5pt;
+  background-color: white;
+  color: black;
+  padding: 5px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11pt;
+  height: auto;
+  width: auto;
+}
+
+.ql-toolbar .ql-formats button.ql-active {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.ql-editor:focus-visible {
+  outline: auto;
+}
+
+.ql-editor {
+  font-family: 'Calibri';
+  line-height: normal;
+  border-radius: 5pt;
+  padding: 4px;
+}
+
+.argument-item {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5pt;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 10px;
+  background-color: #ededed;
+}
+
+.argument-item-utils {
+  float: right;
+  opacity: 0;
+}
+
+.argument-item:hover .argument-item-utils {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    color: white;
+    border: 1px solid white;
+  }
+
+  #query {
+    border: 1px solid white;
+  }
+
+  #revise-argument-input {
+    border: 1px solid white;
+  }
+
+  .card {
+    border: 1px solid white;
+    background-color: #121212;
+  }
+
+  .card.drop-before::before,
+  .card.drop-after::after {
+    border-color: white;
+    background-color: black;
+  }
+
+  .tagline:hover {
+    border-color: white;
+  }
+
+  .cite:hover {
+    border-color: white;
+  }
+
+  .card-body:hover {
+    border-color: white;
+  }
+
+  .card-highlight {
+    color: white;
+  }
+
+  .card-emphasize,
+  .card-emphasize .card-underline {
+    border: 1pt solid white;
+  }
+
+  .argument-item {
+    border: 1px solid white;
+    background-color: #121212;
+  }
+
+  #formatting-toolbar {
+    border-color: white;
+    background-color: black;
+  }
+
+  #formatting-toolbar button {
+    border-color: white;
+  }
+
+  #formatting-toolbar button.active {
+    color: black;
+    background-color: white;
+    border-color: black;
+  }
+
+  #formatting-toolbar button.active:hover {
+    background-color: #ededed;
+  }
+
+  .ql-toolbar, .ql-toolbar.ql-snow {
+    border: 1px solid white;
+    background-color: black;
+  }
+
+  .ql-toolbar .ql-formats button, 
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) {
+    background-color: black;
+    color: white;
+    border-color: white;
+  }
+
+  .ql-toolbar .ql-formats button.ql-active {
+    color: black;
+    background-color: white;
+    border-color: black;
+  }
+}
