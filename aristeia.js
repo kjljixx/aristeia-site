@@ -596,6 +596,8 @@ async function generateUncutArgument() {
     return;
   }
 
+  document.getElementById('query').readOnly = true;
+
   enterButton.style.pointerEvents = 'none';
   enterButton.innerHTML = 'Generating...';
 
