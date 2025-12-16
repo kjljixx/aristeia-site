@@ -213,6 +213,62 @@ function resetSettings() {
   applySettings();
 }
 
+function exportData() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = localStorage.getItem(key);
+  }
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `aristeia-backup-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData() {
+  document.getElementById('import-file-input').click();
+}
+
+function handleImportFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = JSON.parse(e.target.result);
+
+      if (!confirm('This will replace all existing arguments and settings. Are you sure you want to continue?')) {
+        return;
+      }
+
+      localStorage.clear();
+      for (const [key, value] of Object.entries(data)) {
+        localStorage.setItem(key, value);
+      }
+
+      loadSettings();
+      loadSettingsToForm();
+      applySettings();
+      loadAllArguments();
+
+      alert('Data imported successfully!');
+    } catch (error) {
+      console.error('Error importing data:', error);
+      alert('Error importing data!');
+    }
+  };
+  reader.readAsText(file);
+
+  event.target.value = '';
+}
+
 function applySettings() {
   const style = document.createElement('style');
   style.id = 'dynamic-settings-style';
